@@ -1,3 +1,5 @@
+#region Buttons
+
 function gui_x(_x){ return device_mouse_x_to_gui(0)}
 function gui_y(_y){ return device_mouse_y_to_gui(0)}
 
@@ -102,6 +104,10 @@ function gui_button(_x, _y, _index, _sprite, _txt = "", _h_a = 1, _v_a = 1) cons
 	}
 }
 	
+#endregion
+
+#region Menus
+
 function gui_menu(_w, _h) constructor
 {	
 	
@@ -121,12 +127,7 @@ function gui_menu(_w, _h) constructor
 	
 	
 	change_selected = function(_h_input = 0, _v_input = 0)
-	{
-		show_debug_message(height);
-		show_debug_message(index_y);
-		show_debug_message(_v_input);
-		
-		
+	{		
 		var _x = index_x + _h_input;
 		var _y = index_y + _v_input;
 		
@@ -181,8 +182,6 @@ function gui_menu(_w, _h) constructor
 		}
 		else if(buttons_grid[# index_x, _y] == 0)
 		{
-			
-			show_debug_message("a");
 			
 			if(_v_input == 1)
 			{
@@ -256,3 +255,85 @@ function gui_menu(_w, _h) constructor
 	}
 	
 }
+
+#endregion
+
+#region HUDS
+
+function __gameplay_hud() 
+{
+	//Creating Return Menu
+	menu_list[| Menus.Return] = new gui_menu(1, 1);
+
+	#region Return Menu
+
+	var _gap = sprite_get_height(spr_button);
+	var _offset = sprite_get_width(spr_button)/2;
+
+	var _x = display_get_gui_width()/2 - _offset;
+	var _y = display_get_gui_height()/2;
+
+	//Adding button
+	menu_list[| Menus.Return].add_button(0, 0, new gui_button(_x, _y, Buttons.Return, spr_button, "Retornar", 1, 1));
+
+	#endregion
+
+	menu_index = Menus.Return;
+}
+
+function __menu_hud()
+{
+	//Creating Base Menu
+	menu_list[| Menus.Base] = new gui_menu(1, 3);
+	//Creating Config Menu
+	menu_list[| Menus.Config] = new gui_menu(1, 3);
+
+	var _gap = sprite_get_height(spr_button);
+	var _offset = sprite_get_width(spr_button)/2;
+
+	#region Base Menu
+
+	//Creating Base Menu buttons
+	var _x = display_get_gui_width()/2 - _offset;
+	var _y = display_get_gui_height()/3;
+
+
+
+	//Adding button
+	menu_list[| Menus.Base].add_button(0, 0, new gui_button(_x, _y, Buttons.Play, spr_button, "Jogar", 1, 1));
+	_y += _gap;								 
+										 
+	//Adding button							 
+	menu_list[| Menus.Base].add_button(0, 1, new gui_button(_x, _y, Buttons.Config, spr_button, "Configurações", 1, 1));
+	_y += _gap;								
+										
+	//Adding button							
+	menu_list[| Menus.Base].add_button(0, 2, new gui_button(_x, _y, Buttons.Exit, spr_button, "Sair", 1, 1));
+	_y += _gap;
+
+	#endregion
+
+	#region Config Menu
+
+	_x = display_get_gui_width()/2 - _offset;
+	_y = display_get_gui_height()/3;
+
+	//Adding button
+	menu_list[| Menus.Config].add_button(0, 0, new gui_button(_x, _y, Buttons.Volume, spr_button, "Volume", 1, 1));
+	_y += _gap;
+
+	//Adding button
+	menu_list[| Menus.Config].add_button(0, 1, new gui_button(_x, _y, Buttons.FullScreen, spr_button, "Tela Cheia", 1, 1));
+	_y += _gap;
+
+	//Adding button
+	menu_list[| Menus.Config].add_button(0, 2, new gui_button(_x, _y, Buttons.Back, spr_button, "Voltar", 1, 1));
+	_y += _gap;
+
+	#endregion
+
+	menu_index = Menus.Base;
+
+}
+
+#endregion
