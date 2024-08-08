@@ -297,8 +297,6 @@ function __menu_hud()
 	var _x = display_get_gui_width()/2 - _offset;
 	var _y = display_get_gui_height()/3;
 
-
-
 	//Adding button
 	menu_list[| Menus.Base].add_button(0, 0, new gui_button(_x, _y, Buttons.Play, spr_button, "Jogar", 1, 1));
 	_y += _gap;								 

@@ -22,5 +22,6 @@
     {"name":"spr_button","order":1,"path":"sprites/spr_button/spr_button.yy",},
     {"name":"Audio","order":1,"path":"scripts/Audio/Audio.yy",},
     {"name":"spr_toggle","order":2,"path":"sprites/spr_toggle/spr_toggle.yy",},
+    {"name":"snd_select","order":2,"path":"sounds/snd_select/snd_select.yy",},
   ],
 }

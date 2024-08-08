@@ -20,11 +20,11 @@ function scr_play_sfx(_sfx, _randPitch = false)
 	switch(_sfx)
 	{
 		case SFX.HoverButton:
-			_sound = undefined;
+			_sound = snd_hover;
 		break;
 		
 		case SFX.PressButton:
-			_sound = undefined;
+			_sound = snd_select;
 		break;
 		
 		default:

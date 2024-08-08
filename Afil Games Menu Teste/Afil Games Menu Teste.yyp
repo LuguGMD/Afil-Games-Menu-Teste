@@ -43,6 +43,8 @@
     {"id":{"name":"spr_button","path":"sprites/spr_button/spr_button.yy",},},
     {"id":{"name":"Audio","path":"scripts/Audio/Audio.yy",},},
     {"id":{"name":"spr_toggle","path":"sprites/spr_toggle/spr_toggle.yy",},},
+    {"id":{"name":"snd_hover","path":"sounds/snd_hover/snd_hover.yy",},},
+    {"id":{"name":"snd_select","path":"sounds/snd_select/snd_select.yy",},},
     {"id":{"name":"rm_menu","path":"rooms/rm_menu/rm_menu.yy",},},
   ],
   "RoomOrderNodes": [
