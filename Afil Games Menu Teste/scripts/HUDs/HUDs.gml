@@ -30,6 +30,8 @@ function gui_button(_x, _y, _index, _sprite, _txt = "", _h_a = 1, _v_a = 1) cons
 	txt_xscale = .8;
 	txt_yscale = .8;
 	
+	buttonReference = 0;
+	
 	width = sprite_get_width(sprite_index);
 	height = sprite_get_height(sprite_index);
 	
@@ -332,6 +334,40 @@ function __menu_hud()
 
 	menu_index = Menus.Base;
 
+}
+
+function __popUp_hud(_button)
+{
+	//Creating Return Menu
+	menu_list[| Menus.PopUp] = new gui_menu(2, 1);
+
+	#region Return Menu
+
+	var _gap = sprite_get_width(spr_button)/1.5;
+	var _offset = sprite_get_width(spr_button)/1.5;
+
+	var _x = display_get_gui_width()/2 - _offset;
+	var _y = display_get_gui_height()/2;
+
+	//Adding button
+	menu_list[| Menus.PopUp].add_button(0, 0, new gui_button(_x, _y, Buttons.Cancel, spr_button, "Cancelar", 2, 1));
+	
+	var _b = menu_list[| Menus.PopUp].buttons_grid[# 0 , 0];
+	
+	_b.buttonReference = _button;
+	
+	_x += _gap;
+	
+	//Adding button
+	menu_list[| Menus.PopUp].add_button(1, 0, new gui_button(_x, _y, Buttons.Confirm, spr_button, "Confirmar", 1, 1));
+	
+	_b = menu_list[| Menus.PopUp].buttons_grid[# 1 , 0];
+	
+	_b.buttonReference = _button;
+	
+	#endregion
+
+	menu_index = Menus.PopUp;
 }
 
 #endregion

@@ -16,7 +16,8 @@ enum Menus
 {
 	Base,
 	Config,
-	Return
+	Return,
+	PopUp
 }
 
 enum Buttons
@@ -27,7 +28,9 @@ enum Buttons
 	Volume,
 	FullScreen,
 	Back,
-	Return
+	Return,
+	Confirm,
+	Cancel
 }
 
 //Creating a list to hold all menus
@@ -83,12 +86,12 @@ button_no_hover = function(_x, _y)
 	}
 }
 
-button_pressed = function()
+button_pressed = function(_button, _confirmation = true)
 {
 	//Playing sound
 	scr_play_sfx(SFX.PressButton, false);
 	
-	switch(selected_button.index)
+	switch(_button.index)
 	{
 		case Buttons.Play:
 		{
@@ -104,8 +107,17 @@ button_pressed = function()
 		break;
 		case Buttons.Exit:
 		{
-			//Closing the game
-			game_end();
+			//Checking if confirmation is needed
+			if(_confirmation)
+			{
+				create_popUp(_button);
+			}
+			else
+			{
+				//Closing the game
+				game_end();
+			}
+			
 		}
 		break;
 		case Buttons.Back:
@@ -124,6 +136,27 @@ button_pressed = function()
 		{
 			//Going to the menu room
 			room_goto(rm_menu);
+		}
+		break;
+		case Buttons.Confirm:
+		{
+			if(_button.buttonReference != 0)
+			{
+				activate_menu();
+				button_pressed(_button.buttonReference, false);
+				show_menu = false;
+				instance_destroy(self);
+			}
+		}
+		break;
+		case Buttons.Cancel:
+		{
+			if(_button.buttonReference != 0)
+			{
+				activate_menu();
+				show_menu = false;
+				instance_destroy(self);
+			}
 		}
 		break;
 	}
@@ -160,5 +193,14 @@ activate_menu = function()
 	}
 }
 
+create_popUp = function(_button)
+{
+	var _hud = instance_create_layer(x, y, layer, obj_hud);
+	with(_hud)
+	{
+		__popUp_hud(_button);
+	}
+	active_menu = false;
+}
 
 #endregion

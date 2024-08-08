@@ -42,7 +42,10 @@ if(show_menu)
 					//Checking if its the selected button
 					if(index_x == _i && index_y == _j)
 					{
+						if(other.active_menu)
+						{
 						other.button_hover(_i, _j);
+						}
 					}
 					//Not the selected button
 					else
@@ -73,7 +76,7 @@ if(show_menu)
 			//Checking if button was selected
 			if(selected_button.pressed() || keyboard_check_pressed(vk_enter))
 			{
-				button_pressed();
+				button_pressed(selected_button);
 			}
 		
 			//Checking if button was released
