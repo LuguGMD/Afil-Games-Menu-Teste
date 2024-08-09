@@ -8,8 +8,11 @@ if(show_menu)
 	//Checking if menu exist
 	if(menu_list[| menu_index] != 0)
 	{
-		//Checking hovering on buttons
-		menu_list[| menu_index].check_hover();
+		if(!is_interacting)
+		{
+			//Checking hovering on buttons
+			menu_list[| menu_index].check_hover();
+		}
 	}
 	else
 	{
@@ -21,7 +24,7 @@ if(show_menu)
 	var _v = keyboard_check_pressed(vk_down) - keyboard_check_pressed(vk_up);
 	
 	//Checking if there were any inputs
-	if(_h != 0 || _v != 0)
+	if(_h != 0 || _v != 0) && (!is_interacting)
 	{
 		//Sending input to the menu
 		menu_list[| menu_index].change_selected(_h, _v);
@@ -89,6 +92,11 @@ if(show_menu)
 			if(selected_button.pressing() || keyboard_check(vk_enter))
 			{
 				button_pressing();
+			}
+				
+			if(is_interacting)
+			{
+				button_interacting();	
 			}
 			
 		}

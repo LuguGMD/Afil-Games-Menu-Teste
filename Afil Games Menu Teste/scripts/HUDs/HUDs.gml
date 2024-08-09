@@ -3,7 +3,7 @@
 function gui_x(_x){ return device_mouse_x_to_gui(0)}
 function gui_y(_y){ return device_mouse_y_to_gui(0)}
 
-function gui_button(_x, _y, _index, _sprite, _txt = "", _h_a = 1, _v_a = 1) constructor 
+function gui_button(_x, _y, _index, _sprite, _txt = "", _h_a = 1, _v_a = 1, _a = 0) constructor 
 {
 	
 	index = _index;
@@ -21,7 +21,7 @@ function gui_button(_x, _y, _index, _sprite, _txt = "", _h_a = 1, _v_a = 1) cons
 	image_yscale = 1;
 	image_angle = 0;
 	image_blend = $ffffff;
-	image_alpha = 1;
+	image_alpha = _a;
 	
 	txt = _txt;
 	h_allign = _h_a;
@@ -112,43 +112,56 @@ function gui_button(_x, _y, _index, _sprite, _txt = "", _h_a = 1, _v_a = 1) cons
 
 function gui_menu(_w, _h) constructor
 {	
-	
-	
+	//X Index of selected button
 	index_x = 0;
+	//Y Index of selected button
 	index_y = 0;
 	
+	//Width of menu
 	width = _w;
+	//Height of menu
 	height = _h;
 	
+	//Grid that holds the buttons
 	buttons_grid = ds_grid_create(width, height);
 	
 	add_button = function(_x, _y, _button)
 	{
+		//Adding a new button to the grid
 		buttons_grid[# _x, _y] = _button;
 	}
 	
 	
 	change_selected = function(_h_input = 0, _v_input = 0)
 	{		
+		//Getting the position the input is trying to go
 		var _x = index_x + _h_input;
 		var _y = index_y + _v_input;
 		
+		//Checking if passed max
 		if(_x >= width)
 		{
+			//Going to start
 			index_x = 0;
 		}
+		//Checking if passed min
 		else if(_x < 0)
 		{
+			//Going to end
 			index_x = width-1;
 			
+			//ignoring empty buttons slots
 			while(buttons_grid[# index_x, index_y] == 0)
 			{
+				//Going back slots
 				index_x--;	
 			}
 			
 		}
+		//Checking if slot is empty
 		else if(buttons_grid[# _x, index_y] == 0)
 		{
+			//Finding a filled slot
 			if(_h_input == 1)
 			{
 				index_x = 0;
@@ -163,28 +176,36 @@ function gui_menu(_w, _h) constructor
 				}
 			}
 		}
+		//Input is valid
 		else
 		{
 			index_x = _x;
 		}
 		
+		//Checking if passed max
 		if(_y >= height)
 		{
+			//Going to start
 			index_y = 0;
 		}
+		//Checking if passed min
 		else if(_y < 0)
 		{
+			//Going to end
 			index_y = height-1;
 			
+			//ignoring empty buttons slots
 			while(buttons_grid[# index_x, index_y] == 0)
 			{
+				//Going back slots
 				index_y--;	
 			}
 			
 		}
+		//Checking if slot is empty
 		else if(buttons_grid[# index_x, _y] == 0)
 		{
-			
+			//Finding a filled slot
 			if(_v_input == 1)
 			{
 				index_y = 0;
@@ -199,18 +220,21 @@ function gui_menu(_w, _h) constructor
 				}
 			}
 		}
+		//Input is valid
 		else
 		{
 			index_y = _y;
 		}
 	}
 	
+	//Force changes the selected button
 	choose_selected = function(_x, _y)
 	{
 		index_x = _x;
 		index_y = _y;
 	}
 	
+	//Returns the current selected button
 	get_selected = function()
 	{
 		return buttons_grid[# index_x, index_y];
@@ -218,15 +242,18 @@ function gui_menu(_w, _h) constructor
 	
 	check_hover = function()
 	{
+		//Going through all buttons
 		for(var _i = 0; _i < width; _i++)
 		{
 			for(var _j = 0; _j < height; _j++)
 			{
+				//Checking if slot is empty
 				if(buttons_grid[# _i, _j] != 0)
 				{
-					
+					//Checking if mouse is ontop
 					if(buttons_grid[# _i, _j].hover())
 					{
+						//Changing selected button
 						index_x = _i;
 						index_y = _j;
 					}
@@ -238,14 +265,16 @@ function gui_menu(_w, _h) constructor
 	
 	draw_buttons = function()
 	{
+		//Going through all buttons
 		for(var _i = 0; _i < width; _i++)
 		{
 			for(var _j = 0; _j < height; _j++)
 			{
-				
+				//Checking if the slot is empty
 				if(buttons_grid[# _i, _j] != 0)
 				{		
-					buttons_grid[# _i, _j].draw_ext();
+					//Drawing button
+					buttons_grid[# _i, _j].draw();
 				}
 			}
 		}
@@ -253,6 +282,7 @@ function gui_menu(_w, _h) constructor
 	
 	destroy = function()
 	{
+		//Destroing buttons grid
 		ds_grid_destroy(buttons_grid);
 	}
 	
@@ -347,19 +377,21 @@ function __popUp_hud(_button)
 	var _offset = sprite_get_width(spr_button)/1.5;
 
 	var _x = display_get_gui_width()/2 - _offset;
-	var _y = display_get_gui_height()/2;
+	var _y = display_get_gui_height()/1.5;
+
+	_x -= _gap;
 
 	//Adding button
-	menu_list[| Menus.PopUp].add_button(0, 0, new gui_button(_x, _y, Buttons.Cancel, spr_button, "Cancelar", 2, 1));
+	menu_list[| Menus.PopUp].add_button(0, 0, new gui_button(_x, _y, Buttons.Cancel, spr_button, "Cancelar", 1, 1, 1));
 	
 	var _b = menu_list[| Menus.PopUp].buttons_grid[# 0 , 0];
 	
 	_b.buttonReference = _button;
 	
-	_x += _gap;
+	_x += _gap*2;
 	
 	//Adding button
-	menu_list[| Menus.PopUp].add_button(1, 0, new gui_button(_x, _y, Buttons.Confirm, spr_button, "Confirmar", 1, 1));
+	menu_list[| Menus.PopUp].add_button(1, 0, new gui_button(_x, _y, Buttons.Confirm, spr_button, "Confirmar", 1, 1, 1));
 	
 	_b = menu_list[| Menus.PopUp].buttons_grid[# 1 , 0];
 	

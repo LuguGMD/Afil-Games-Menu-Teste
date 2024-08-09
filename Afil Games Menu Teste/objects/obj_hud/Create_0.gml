@@ -12,6 +12,9 @@ menu_last_index = 0;
 //Hold a reference to the selected button
 selected_button = 0;
 
+//Holds if there is an interaction running
+is_interacting = false;
+
 enum Menus
 {
 	Base,
@@ -159,6 +162,12 @@ button_pressed = function(_button, _confirmation = true)
 			}
 		}
 		break;
+		case Buttons.Volume:
+		{
+			is_interacting = !is_interacting;
+			_button.txt = "Volume";
+		}
+		break;
 	}
 }
 
@@ -170,6 +179,37 @@ button_released = function()
 button_pressing = function()
 {
 	
+}
+
+button_interacting = function()
+{
+	switch(selected_button.index)
+	{
+		case Buttons.Volume:
+		
+			selected_button.txt = "< " + string(floor(global.sfxVolume * 100)) + "% >";
+			
+			//Getting horizontal and vertical input
+			var _h = keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left);
+			
+			if(_h != 0)
+			{
+				//Changing Sfx volume
+				global.sfxVolume += _h/10;
+				
+				global.sfxVolume = clamp(global.sfxVolume, 0, 1);
+				
+				scr_play_sfx(snd_hover);
+			}
+			
+			//Checking if clicked outside of the button
+			if(mouse_check_button_pressed(mb_left) && !selected_button.pressed())
+			{
+				//Disabling interaction
+				button_pressed(selected_button);
+			}
+		break;
+	}
 }
 
 //Activates all shown menus
