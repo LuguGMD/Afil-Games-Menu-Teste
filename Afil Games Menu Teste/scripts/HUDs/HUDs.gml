@@ -377,7 +377,7 @@ function __popUp_hud(_button)
 	var _offset = sprite_get_width(spr_button)/1.5;
 
 	var _x = display_get_gui_width()/2 - _offset;
-	var _y = display_get_gui_height()/1.5;
+	var _y = display_get_gui_height()/1.7;
 
 	_x -= _gap;
 
@@ -388,7 +388,7 @@ function __popUp_hud(_button)
 	
 	_b.buttonReference = _button;
 	
-	_x += _gap*2;
+	_x += _gap*2.5;
 	
 	//Adding button
 	menu_list[| Menus.PopUp].add_button(1, 0, new gui_button(_x, _y, Buttons.Confirm, spr_button, "Confirmar", 1, 1, 1));
